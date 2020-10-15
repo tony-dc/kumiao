@@ -1,7 +1,7 @@
 <template>
   <footer id="footer">
     <ul>
-      <router-link class="active" to='/movie' tag="li">
+      <router-link  to='/movie' tag="li">
         <i class="iconfont icon-dianying"></i>
         <p>电影</p>
       </router-link>
@@ -35,7 +35,8 @@ export default {
             height: 50px;
             align-items:center;
             text-align: center;
-            li.active{
+             //vue自带的，给路由当中选中的那个添加样式
+            li.router-link-active{
                  color:#f03d37;
             }
             li{

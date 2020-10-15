@@ -17,7 +17,11 @@ export default {
         {
             path:'search',
             component:()=>import('@/components/Search')
+        },
+        {
+            // path:'/movie',
+            path:'',
+            redirect:'/movie/nowplaying'
         }
-
     ]
 }
