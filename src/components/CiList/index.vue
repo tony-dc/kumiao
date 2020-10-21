@@ -1,154 +1,142 @@
 <template>
-    <div class="cinema_body">
-				<ul>
-					<li>
-						<div>
-							<span>大地影院(澳东世纪店)</span>
-							<span class="q"><span class="price">22.9</span> 元起</span>
-						</div>
-						<div class="address">
-							<span>金州区大连经济技术开发区澳东世纪3层</span>
-							<span>1763.5km</span>
-						</div>
-						<div class="card">
-                			<div>小吃</div>
-                			<div>折扣卡</div>
-       					</div>
-					</li>
-					<li>
-						<div>
-							<span>大地影院(澳东世纪店)</span>
-							<span class="q"><span class="price">22.9</span> 元起</span>
-						</div>
-						<div class="address">
-							<span>金州区大连经济技术开发区澳东世纪3层</span>
-							<span>1763.5km</span>
-						</div>
-						<div class="card">
-                			<div>小吃</div>
-                			<div>折扣卡</div>
-       					</div>
-					</li>
-					<li>
-						<div>
-							<span>大地影院(澳东世纪店)</span>
-							<span class="q"><span class="price">22.9</span> 元起</span>
-						</div>
-						<div class="address">
-							<span>金州区大连经济技术开发区澳东世纪3层</span>
-							<span>1763.5km</span>
-						</div>
-						<div class="card">
-                			<div>小吃</div>
-                			<div>折扣卡</div>
-       					</div>
-					</li>
-					<li>
-						<div>
-							<span>大地影院(澳东世纪店)</span>
-							<span class="q"><span class="price">22.9</span> 元起</span>
-						</div>
-						<div class="address">
-							<span>金州区大连经济技术开发区澳东世纪3层</span>
-							<span>1763.5km</span>
-						</div>
-						<div class="card">
-                			<div>小吃</div>
-                			<div>折扣卡</div>
-       					</div>
-					</li>
-					<li>
-						<div>
-							<span>大地影院(澳东世纪店)</span>
-							<span class="q"><span class="price">22.9</span> 元起</span>
-						</div>
-						<div class="address">
-							<span>金州区大连经济技术开发区澳东世纪3层</span>
-							<span>1763.5km</span>
-						</div>
-						<div class="card">
-                			<div>小吃</div>
-                			<div>折扣卡</div>
-       					</div>
-					</li>
-					<li>
-						<div>
-							<span>大地影院(澳东世纪店)</span>
-							<span class="q"><span class="price">22.9</span> 元起</span>
-						</div>
-						<div class="address">
-							<span>金州区大连经济技术开发区澳东世纪3层</span>
-							<span>1763.5km</span>
-						</div>
-						<div class="card">
-                			<div>小吃</div>
-                			<div>折扣卡</div>
-       					</div>
-					</li>
-				</ul>
-			</div>
+  <div class="cinema_body">
+    <ul>
+      <li v-for="item in cinemaList" :key="item.id">
+        <div>
+          <span>{{item.nm}}</span>
+          <span class="q">
+            <span class="price">{{item.sellPrice}}</span> 元起
+          </span>
+        </div>
+        <div class="address">
+          <span>{{item.addr}}</span>
+          <span>{{item.distance}}</span>
+        </div>
+        <div class="card">
+          <div
+            v-for="(itemson,index) in item.tag"
+            :key="index"
+            v-if="itemson===1"
+            :class="index|cardClass"
+          >{{index|formatCard}}</div>
+        </div>
+      </li>
+    </ul>
+  </div>
 </template>
 <script>
-    export default{
-        name:"CiList"
+export default {
+  name: "CiList",
+  data() {
+    return {
+      cinemaList: []
+    };
+  },
+  mounted() {
+    this.$service.get("/ajax/cinemaList?ci=10").then(res => {
+      this.cinemaList = res.data.cinemas;
+      console.log(this.cinemaList);
+    });
+  },
+  filters: {
+    formatCard(index) {
+      let card = [
+        { key: "allowRefund", value: "改签" },
+        { key: "endorse", value: "退票" },
+        { key: "sell", value: "折扣卡" },
+        { key: "snack", value: "小吃" }
+      ];
+      for (let i = 0; i < card.length; i++) {
+        if (card[i].key === index) {
+          return card[i].value;
+        }
+      }
+      return "";
+    },
+    cardClass(index) {
+      let card = [
+        { key: "allowRefund", value: "bl" },
+        { key: "endorse", value: "bl" },
+        { key: "sell", value: "or" },
+        { key: "snack", value: "or" }
+      ];
+      for (let i = 0; i < card.length; i++) {
+        if (card[i].key === index) {
+          return card[i].value;
+        }
+      }
+      return "";
     }
+  }
+};
 </script>
 <style lang="scss" scoped>
-#content .cinema_body{
-    position: absolute;
-    top:95px;
-    bottom:0px;
-    left:0;
-    right:0;
-    overflow: auto;
-    ul{
-        padding:20px;
-        li{
-            margin-bottom:20px;
-             border-bottom:1px solid #e6e6e6;
-            div{
-              margin-bottom:10px;
-              .q{
-                  font-size:11px;color:#f03d37;
-              }
-              .price{
-                  font-size: 18px;
-              }
-            
-            }
-              .address{
-                 font-size: 13px; 
-                 color:#666; 
-                 span:nth-of-type(2){
-                     float: right;
-                 }
-              }
-            .card{
-                display:flex;
-                div{
-                     padding: 0 3px; height: 15px; line-height: 15px; border-radius: 2px; color: #f90; border: 1px solid #f90; font-size: 13px; margin-right: 5px;
-                }
-                div.or{
-                    color: #f90; border: 1px solid #f90;
-                }
-                div.bl{
-                    color: #589daf; border: 1px solid #589daf;
-                }
-
-            }
+#content .cinema_body {
+  position: absolute;
+  top: 95px;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  ul {
+    padding: 20px;
+    li {
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e6e6e6;
+      div {
+        margin-bottom: 10px;
+        .q {
+          font-size: 11px;
+          color: #f03d37;
         }
+        .price {
+          font-size: 18px;
+          margin-left: 10px;
+        }
+      }
+      .address {
+        font-size: 13px;
+        color: #666;
+        display: flex;
+        justify-content: space-between;
+        span:nth-of-type(1) {
+          margin: 0;
+          padding: 0;
+          display: block;
+          width: 220px;
+          line-height: 1.4em;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        span:nth-of-type(2) {
+          display: block;
+          line-height: 1.4em;
+          //  float: right;
+        }
+      }
+      .card {
+        display: flex;
+        div {
+          padding: 0 3px;
+          height: 15px;
+          line-height: 15px;
+          border-radius: 2px;
+          color: #f90;
+          border: 1px solid #f90;
+          font-size: 13px;
+          margin-right: 5px;
+        }
+        div.or {
+          color: #f90;
+          border: 1px solid #f90;
+        }
+        div.bl {
+          color: #589daf;
+          border: 1px solid #589daf;
+        }
+      }
     }
+  }
 }
-/* #content .cinema_body{ flex:1; overflow:auto;}
-.cinema_body ul{ padding:20px;}
-.cinema_body li{  border-bottom:1px solid #e6e6e6; margin-bottom: 20px;}
-.cinema_body div{ margin-bottom: 10px;}
-.cinema_body .q{ font-size: 11px; color:#f03d37;}
-.cinema_body .price{ font-size: 18px;}
-.cinema_body .address{ font-size: 13px; color:#666;}
-.cinema_body .address span:nth-of-type(2){ float:right; }
-.cinema_body .card{ display: flex;}
-.cinema_body .card div{ padding: 0 3px; height: 15px; line-height: 15px; border-radius: 2px; color: #f90; border: 1px solid #f90; font-size: 13px; margin-right: 5px;}
-.cinema_body .card div.or{ color: #f90; border: 1px solid #f90;}
-.cinema_body .card div.bl{ color: #589daf; border: 1px solid #589daf;} */
 </style>
