@@ -1,19 +1,22 @@
 <template>
 			<div class="movie_body">
-				<ul>
-					<li v-for='(item,index) in moviesData' :key='index'>
-						<div class="pic_show"><img :src="item.img|setWH('120.168')"></div>
-						<div class="info_list">
-							<h2>{{item.nm}}</h2>
-							<p><span class="person">{{item.wish}}</span> 人想看</p>
-							<p>{{item.star}}</p>
-							<p>{{item.rt}} 上映</p>
-						</div>
-						<div class="btn_pre">
-							预售
-						</div>
-					</li>
-				</ul>
+        <Loading v-if='isloading' />
+        <Scroller v-else>
+              <ul>
+                <li v-for='(item,index) in moviesData' :key='index'>
+                  <div class="pic_show"><img :src="item.img|setWH('120.168')"></div>
+                  <div class="info_list">
+                    <h2>{{item.nm}}</h2>
+                    <p><span class="person">{{item.wish}}</span> 人想看</p>
+                    <p>{{item.star}}</p>
+                    <p>{{item.rt}} 上映</p>
+                  </div>
+                  <div class="btn_pre">
+                    预售
+                  </div>
+                </li>
+              </ul>
+        </Scroller>
 			</div>
 </template>
 <script>
@@ -21,13 +24,21 @@ export default {
   name: "ComingSoon",
   data(){
 	  return {
-		  moviesData:[]
+      moviesData:[],
+      isloading:true,
+       beforeId:-1
 	  }
   },
-  mounted(){
-	  this.$service.get("/ajax/comingList?ci=10&token=&limit=10").then(res=>{
+ activated(){
+    let cityId=this.$store.state.city.id
+    if(cityId===this.beforeId) return 
+    console.log(111)
+    this.isloading=true
+	  this.$service.get(`/ajax/comingList?ci=${cityId}&token=&limit=10`).then(res=>{
 		  console.log(res)
-		  this.moviesData=res.data.coming
+      this.moviesData=res.data.coming
+      this.isloading=false
+      this.beforeId=cityId
 	  })
   }
 };

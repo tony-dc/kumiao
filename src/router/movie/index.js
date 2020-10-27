@@ -19,6 +19,12 @@ export default {
             component:()=>import('@/components/Search')
         },
         {
+            path:'detail',
+            components:{
+                detail:()=>import('@/views/Movie/movieDetail.vue')
+            }
+        },
+        {
             // path:'/movie',
             path:'',
             redirect:'/movie/nowplaying'

@@ -4,6 +4,12 @@ import router from './router'
 import store from './store'
 import service from './api/service'
 import axios from 'axios'
+//注册全局better-scroll组件
+import Scroller from '@/components/scroller'
+Vue.component('Scroller',Scroller)
+import Loading from '@/components/loading'
+//讲Loading组件注册成全局组件
+Vue.component('Loading',Loading)
 Vue.prototype.axios=axios
 Vue.prototype.$service=service
 //挂载到全局使用

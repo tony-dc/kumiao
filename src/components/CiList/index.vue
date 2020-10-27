@@ -1,27 +1,30 @@
 <template>
   <div class="cinema_body">
-    <ul>
-      <li v-for="item in cinemaList" :key="item.id">
-        <div>
-          <span>{{item.nm}}</span>
-          <span class="q">
-            <span class="price">{{item.sellPrice}}</span> 元起
-          </span>
-        </div>
-        <div class="address">
-          <span>{{item.addr}}</span>
-          <span>{{item.distance}}</span>
-        </div>
-        <div class="card">
-          <div
-            v-for="(itemson,index) in item.tag"
-            :key="index"
-            v-if="itemson===1"
-            :class="index|cardClass"
-          >{{index|formatCard}}</div>
-        </div>
-      </li>
-    </ul>
+    <Loading v-if='isloading' />
+    <Scroller v-else>
+          <ul>
+            <li v-for="item in cinemaList" :key="item.id">
+              <div>
+                <span>{{item.nm}}</span>
+                <span class="q">
+                  <span class="price">{{item.sellPrice}}</span> 元起
+                </span>
+              </div>
+              <div class="address">
+                <span>{{item.addr}}</span>
+                <span>{{item.distance}}</span>
+              </div>
+              <div class="card">
+                <div
+                  v-for="(itemson,index) in item.tag"
+                  :key="index"
+                  v-if="itemson===1"
+                  :class="index|cardClass"
+                >{{index|formatCard}}</div>
+              </div>
+            </li>
+          </ul>
+    </Scroller>
   </div>
 </template>
 <script>
@@ -29,13 +32,20 @@ export default {
   name: "CiList",
   data() {
     return {
-      cinemaList: []
+      cinemaList: [],
+      isloading:true,
+       beforeId:-1
     };
   },
   mounted() {
-    this.$service.get("/ajax/cinemaList?ci=10").then(res => {
+    let cityId=this.$store.state.city.id 
+    if(cityId===this.beforeId) return 
+    this.isloading=true
+    this.$service.get("/ajax/cinemaList?ci="+cityId).then(res => {
       this.cinemaList = res.data.cinemas;
       console.log(this.cinemaList);
+      this.isloading=false
+      this.beforeId=cityId
     });
   },
   filters: {

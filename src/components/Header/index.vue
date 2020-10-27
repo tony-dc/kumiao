@@ -1,5 +1,6 @@
 <template>
   <header id="header">
+    <slot></slot>
     <h1 class="logo">{{title}}</h1>
   </header>
 </template>
@@ -29,12 +30,12 @@ export default {
     line-height: 50px;
     font-weight: normal;
   }
-  // i {
-  //   position: absolute;
-  //   left: 5px;
-  //   top: 50%;
-  //   margin-top: -13px;
-  //   font-size: 26px;
-  // }
+  i {
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    margin-top: -13px;
+    font-size: 26px;
+  }
 }
 </style>

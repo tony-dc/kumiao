@@ -1,39 +1,34 @@
 <template>
   <div class="search_body">
-    <div class="search_input">
-      <div class="search_input_wrapper">
-        <i class="iconfont icon-sousuo"></i>
-        <input type="text" v-model="message" />
-      </div>
-    </div>
-    <div class="search_result">
-      <h3>电影/电视剧/综艺</h3>
-      <ul>
-        <li v-for="item in moviesList" :key="item.id">
-          <div class="img">
-            <img :src="item.img|setWH('120.168')" alt />
-          </div>
-          <div class="info">
-            <p>
-              <span>{{item.nm}}</span>
-              <span>{{item.sc}}</span>
-            </p>
-            <p>{{item.enm}}</p>
-            <p>{{item.cat}}</p>
-            <p>{{item.rt}}</p>
-          </div>
-        </li>
-        <!-- <li>
-            <div class="img"><img src="/images/movie_2.jpg" alt=""></div>
-            <div class="info">
-              <p><span>无名之辈</span><span>8.5</span></p>
-              <p>A Cool Fish</p>
-              <p>剧情,喜剧,犯罪</p>
-              <p>2018-11-16</p>
+    <Scroller>
+      <div>
+            <div class="search_input">
+              <div class="search_input_wrapper">
+                <i class="iconfont icon-sousuo"></i>
+                <input type="text" v-model="message" />
+              </div>
             </div>
-        </li>-->
-      </ul>
-    </div>
+            <div class="search_result">
+              <h3>电影/电视剧/综艺</h3>
+              <ul>
+                <li v-for="item in moviesList" :key="item.id">
+                  <div class="img">
+                    <img :src="item.img|setWH('120.168')" alt />
+                  </div>
+                  <div class="info">
+                    <p>
+                      <span>{{item.nm}}</span>
+                      <span>{{item.sc}}</span>
+                    </p>
+                    <p>{{item.enm}}</p>
+                    <p>{{item.cat}}</p>
+                    <p>{{item.rt}}</p>
+                  </div>
+                </li>
+              </ul>
+            </div> 
+        </div> 
+    </Scroller>
   </div>
 </template>
 <script>
@@ -42,7 +37,8 @@ export default {
   data() {
     return {
       message: "",
-      moviesList: []
+      moviesList: [],
+      timer:null
     };
   },
   methods:{
@@ -56,45 +52,43 @@ export default {
   watch: {
     message(newVal) {
       //解决防抖  第一种方法 延时器
-      // let timer = null;
-      // clearTimeout(timer)
-      // timer = setTimeout(() => {
-      //   this.$service
-      //     .get(`/ajax/search?kw=${newVal}&cityId=10`)
-      //     .then(res => {
-      //       console.log(res.data.movies.list);
-      //       if (res.data.movies.list) {
-      //         this.moviesList = res.data.movies.list;
-      //       }
-      //     });
-      // }, 4000);
-
-
-      //第二种方法  vue-axios自带的
-      this.cancelRequest()
-      var that=this
-       this.$service.get(`/ajax/search?kw=${newVal}&cityId=10`,{
-          cancelToken: new this.axios.CancelToken(function executor(c) {
-                    that.source = c;
-                })
-       })
+      let cityId=this.$store.state.city.id
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        this.$service.get(`/ajax/search?kw=${newVal}&cityId=${cityId}`)
           .then(res => {
-            console.log(res.data.movies.list);
-            if (res.data.movies.list) {
-              this.moviesList = res.data.movies.list;
-            }
-          })
-          .catch((err) => {
-                if (this.axios.isCancel(err)) {
-                    console.log('Rquest canceled', err.message); //请求如果被取消，这里是返回取消的message
-                } else {
-                    console.log(err);
-                }
-            })
-
+            console.log(cityId)
+          this.moviesList=res.data.movies? res.data.movies.list:[]; 
+         
+          });
+      }, 1000);
     }
   }
-};
+
+      //第二种方法  vue-axios自带的
+    //   this.cancelRequest()
+    //   var that=this
+    //    this.$service.get(`/ajax/search?kw=${newVal}&cityId=10`,{
+    //       cancelToken: new this.axios.CancelToken(function executor(c) {
+    //                 that.source = c;
+    //             })
+    //    })
+    //       .then(res => {
+    //         console.log(res.data.movies.list);
+    //         if (res.data.movies.list) {
+    //           this.moviesList = res.data.movies.list;
+    //         }
+    //       })
+    //       .catch((err) => {
+    //             if (this.axios.isCancel(err)) {
+    //                 console.log('Rquest canceled', err.message); //请求如果被取消，这里是返回取消的message
+    //             } else {
+    //                 console.log(err);
+    //             }
+    //         })
+
+    // }
+  }
 </script>
 <style lang="scss" scoped>
 #content .search_body {
