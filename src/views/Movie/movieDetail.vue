@@ -1,5 +1,5 @@
 <template>
-    <div id="detail">
+    <div id="detail" class="slider-enter-active">
         <Header title='影片详情'>
           <i class="iconfont icon-right" @touchstart='handleToBack'></i>
         </Header>
@@ -9,47 +9,30 @@
                <div class="detail_list_filter"></div>
                <div class="detail_list_content">
                    <div class="detail_list_img">
-						<img src="/images/movie_1.jpg" alt="">
+						<img :src="movieData.img|setWH('120.168')"  alt="">
 					</div>
                     <div class="detail_list_info">
-						<h2>无名之辈</h2>
-						<p>A Cool Fish</p>
-						<p>9.2</p>
-						<p>剧情,喜剧,犯罪</p>
-						<p>中国大陆 / 108分钟</p>
-						<p>2018-11-16大陆上映</p>
+						<h2>{{movieData.nm}}</h2>
+						<p>{{moveId.enm}}</p>
+						<p>{{movieData.sc}}</p>
+						<p>{{movieData.cat}}</p>
+						<p>{{movieData.src}} / {{movieData.dur}}分钟</p>
+						<p>{{movieData.pubDesc}}</p>
 					</div>
                </div>
             </div>
             <div class="detail_intro">
-                <p>在一座山间小城中，一对低配劫匪、一个落魄的泼皮保安、一个身体残疾却性格彪悍的残毒舌女以及一系列生活在社会不同轨迹上的小人物，在一个貌似平常的日子里，因为一把丢失的老枪和一桩当天发生在城中的乌龙劫案，从而被阴差阳错地拧到一起，发生的一幕幕令人啼笑皆非的荒诞喜剧。</p>
+                <p>{{movieData.dra}}</p>
             </div>
-            <div class="detail_swapper"> 
-                <ul>
-                    <li class="swiper-slide">
+            <div class="detail_player swapper-container" ref="detail_player"> 
+                <ul class="detail_swapper">
+                    <li class="swiper-slide" v-for='(item,index) in movieData.photos' :key='index'>
                             <div>
-                                <img src="/images/person_1.webp" alt="">
+                                <img :src="item | setWH('120.168')" alt="">
                             </div>
-                            <p>陈建斌</p>
-                            <p>马先勇</p>
-					    </li>
-                      <li class="swiper-slide">
-                            <div>
-                                <img src="/images/person_1.webp" alt="">
-                            </div>
-                            <p>陈建斌</p>
-                            <p>马先勇</p>
-					    </li>
-                      <li class="swiper-slide">
-                            <div>
-                                <img src="/images/person_1.webp" alt="">
-                            </div>
-                            <p>陈建斌</p>
-                            <p>马先勇</p>
 					    </li>
                 </ul>
             </div>
-
         </div>
     </div>
 </template>
@@ -57,18 +40,52 @@
   import Header from '@/components/Header'
     export default{
         name:'movieDetail',
+        data(){
+           return {
+               movieData:[]
+           }
+        },
+        props:['moveId'],
         components:{
             Header
         },
+        mounted(){
+            const moveId=this.moveId
+            //第二种方法通过$route.params来获取动态id
+            // const moveId=this.$route.params.moveId
+             this.$service.get('/ajax/detailmovie?movieId='+moveId).then(res=>{
+                this.movieData=res.data.detailMovie
+                console.log( this.movieData)
+                this.$nextTick(()=>{
+                    new Swiper(this.$refs.detail_player,{
+                        slidesPerView:'auto',
+                        freeMode:true,
+                        freeModeSticky:true
+                
+                    })
+                })
+             })
+           
+        },
         methods:{
             handleToBack(){
+                //编程式路由
                 this.$router.back()
             }
         }
     }
 </script>
 <style lang='scss' scoped>
-#detail{
+#detail.slider-enter-active{
+        animation: .3s linear slideMove;
+        @keyframes slideMove {
+            0%{
+                transform: translateX(100%)
+            }
+            100%{
+                transform: translateX(0%)
+            }
+        }
         position: absolute;
         left:0;
         top:0;
@@ -128,9 +145,29 @@
 
                          }
                      }
+                     .swapper-container{
+                         width:100%;
+                         height: 100%;
+                         .detail_swapper{
+                             width:auto;
+                             display: flex;
+                             justify-content: space-between;
+                             .swiper-slide{
+                                 width:120px;
+                                 flex:1;
+                                 float: left;
+                                 img{
+                                     width:100%;
+                                     height:100%
+                                 }
+                             }
+                         }
+                     }
                 }
             }
             
         }
     }
+
+
 </style>

@@ -5,11 +5,11 @@
           <ul>
             <li class="msg">{{pulldownMsg}}</li>
             <li v-for="(item,index) in movieList" :key="index">
-              <div class="pic_show">
+              <div class="pic_show" @tap='handleToDetail(item.id)'>
                 <img :src="item.img|setWH('128.180')" />
               </div>
               <div class="info_list">
-                <h2>
+                <h2 @tap='handleToDetail(item.id)'>
                   {{item.nm}}
                   <img src="@/assets/maxs.png" alt v-if="item.version" />
                 </h2>
@@ -88,6 +88,10 @@ export default {
               }, 1000);
             });
           }
+    },
+    handleToDetail(moveId){
+      //编程式路由导航
+      this.$router.push('/movie/detail/1/'+moveId)
     }
   }
 };
