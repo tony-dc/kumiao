@@ -24,13 +24,13 @@
             <div class="detail_intro">
                 <p>{{movieData.dra}}</p>
             </div>
-            <div class="detail_player swapper-container" ref="detail_player"> 
-                <ul class="detail_swapper">
+            <div class="detail_player swiper-container" ref="detail_player"> 
+                <ul class="swiper-wrapper">
                     <li class="swiper-slide" v-for='(item,index) in movieData.photos' :key='index'>
                             <div>
-                                <img :src="item | setWH('120.168')" alt="">
+                                <img :src="item | setWH('120.148')" alt="">
                             </div>
-					    </li>
+					</li>
                 </ul>
             </div>
         </div>
@@ -42,7 +42,13 @@
         name:'movieDetail',
         data(){
            return {
-               movieData:[]
+               movieData:[],
+               active:''
+           }
+        },
+        filters:{
+           active(value){
+               this.movieData.img
            }
         },
         props:['moveId'],
@@ -75,7 +81,7 @@
         }
     }
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 #detail.slider-enter-active{
         animation: .3s linear slideMove;
         @keyframes slideMove {
@@ -102,7 +108,7 @@
                 .detail_bg{
                      width:100%;
                      height:100%;
-                     background:url('/images/movie_1.jpg') 0 40%;
+                     background:0 40%;
                      filter: blur(20px);
                 }
                 .detail_list_filter{
@@ -145,24 +151,31 @@
 
                          }
                      }
-                     .swapper-container{
-                         width:100%;
-                         height: 100%;
-                         .detail_swapper{
-                             width:auto;
-                             display: flex;
-                             justify-content: space-between;
-                             .swiper-slide{
-                                 width:120px;
-                                 flex:1;
-                                 float: left;
-                                 img{
-                                     width:100%;
-                                     height:100%
-                                 }
-                             }
-                         }
-                     }
+                     
+                }
+            }
+            .detail_intro{
+                margin:5px 0;
+                p{
+                    text-indent: 10px;
+                    line-height: 1.2em;
+                }
+            }
+            .swiper-container{
+                .swiper-wrapper{
+                    .swiper-slide{
+                        width:120px;
+                        height:148px;
+                        div{
+                            width:100%;
+                            height:100%;
+                            img{
+                            width:100%;
+                            height:100%
+                        }
+                        }
+                       
+                    }
                 }
             }
             
