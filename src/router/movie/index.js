@@ -19,9 +19,25 @@ export default {
             component:()=>import('@/components/Search')
         },
         {
-            path:'detail',
+            path:'detail/1/:moveId',
+            //多视图显示规则
             components:{
+                default:()=>import('@/components/NowPalying'),
                 detail:()=>import('@/views/Movie/movieDetail.vue')
+            },
+            props:{
+                detail:true
+            }
+        },
+        {
+            path:'detail/2/:moveId',
+            //多视图显示规则
+            components:{
+                default:()=>import('@/components/ComingSoon'),
+                detail:()=>import('@/views/Movie/movieDetail.vue')
+            },
+            props:{
+                detail:true
             }
         },
         {
