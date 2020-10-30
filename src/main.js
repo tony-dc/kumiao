@@ -15,7 +15,6 @@ Vue.prototype.$service=service
 //挂载到全局使用
 Vue.filter('setWH',(url,args)=>{
   //用正则替换
-  console.log(url)
   return url.replace(/w\.h/,args)
 })
 Vue.config.productionTip = false
