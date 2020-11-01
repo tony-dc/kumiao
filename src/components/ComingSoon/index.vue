@@ -1,96 +1,137 @@
 <template>
-			<div class="movie_body">
-        <Loading v-if='isloading' />
-        <Scroller v-else>
-              <ul>
-                <li v-for='(item,index) in moviesData' :key='index'>
-                  <div class="pic_show" @tap='handleToDetail(item.id)'><img :src="item.img|setWH('120.168')"></div>
-                  <div class="info_list">
-                    <h2 @tap='handleToDetail(item.id)'>{{item.nm}}</h2>
-                    <p><span class="person">{{item.wish}}</span> 人想看</p>
-                    <p>{{item.star}}</p>
-                    <p>{{item.rt}} 上映</p>
-                  </div>
-                  <div class="btn_pre">
-                    预售
-                  </div>
-                </li>
-              </ul>
-        </Scroller>
-			</div>
+  <div class="movie_body">
+    <Loading v-if="isloading" />
+    <Scroller v-else>
+      <ul>
+        <li v-for="(item,index) in moviesData" :key="index">
+          <div class="pic_show" @tap="handleToDetail(item.id)">
+            <img :src="item.img|setWH('120.168')" />
+          </div>
+          <div class="info_list">
+            <h2 @tap="handleToDetail(item.id)">{{item.nm}}</h2>
+            <p>
+              <span class="person">{{item.wish}}</span> 人想看
+            </p>
+            <p>{{item.star}}</p>
+            <p>{{item.rt}} 上映</p>
+          </div>
+          <div class="btn_pre">预售</div>
+        </li>
+      </ul>
+    </Scroller>
+  </div>
 </template>
 <script>
 export default {
   name: "ComingSoon",
-  data(){
-	  return {
-      moviesData:[],
-      isloading:true,
-       beforeId:-1
-	  }
+  data() {
+    return {
+      moviesData: [],
+      isloading: true,
+      beforeId: -1
+    };
   },
- activated(){
-    let cityId=this.$store.state.city.id
-    if(cityId===this.beforeId) return 
-    console.log(111)
-    this.isloading=true
-	  this.$service.get(`/ajax/comingList?ci=${cityId}&token=&limit=10`).then(res=>{
-		  console.log(res)
-      this.moviesData=res.data.coming
-      this.isloading=false
-      this.beforeId=cityId
-	  })
+  activated() {
+    this.getComingSoon();
+    // let cityId=this.$store.state.city.id
+    // if(cityId===this.beforeId) return
+    // this.isloading=true
+    // this.$service.get(`/ajax/comingList?ci=${cityId}&token=&limit=10`).then(res=>{
+    //   console.log(res)
+    //   this.moviesData=res.data.coming
+    //   this.isloading=false
+    //   this.beforeId=cityId
+    // })
   },
-  methods:{
-     handleToDetail(moveId){
-            this.$router.push('/movie/detail/2/'+moveId)   
-     }
+  methods: {
+    handleToDetail(moveId) {
+      this.$router.push("/movie/detail/2/" + moveId);
+    },
+    async getComingSoon() {
+      let cityId = this.$store.state.city.id;
+      if (cityId === this.beforeId) return;
+      this.isloading = true;
+      let res = await this.$api.getComingSoon(cityId);
+      if (res) {
+        this.moviesData = res.coming;
+        this.isloading = false;
+        this.beforeId = cityId;
+      }
+    }
   }
 };
 </script>
 <style lang="scss" scoped>
-     #content .movie_body{
-      position: absolute;
-      top:95px;
-      left:0;
-      right:0;
-      bottom:45px;
-      overflow: auto;
-      ul{
-        margin:0 12px;
-        overflow: hidden;
-        li{
-          margin-top:12px;
-          display: flex;
-          align-items:center;
-          border-bottom: 1px #e6e6e6 solid; 
-          padding-bottom: 10px;
-          .pic_show{ 
-              width:64px; 
-              height: 90px;
-              img{ width:100%;}
-          }
-          .info_list { 
-                  margin-left: 10px;
-                  flex:1; 
-                  position: relative;
-                  h2{
-                      font-size: 17px; 
-                      line-height: 24px; 
-                      width:150px; 
-                      overflow: hidden;
-                      font-weight: 700;
-                      white-space: nowrap; 
-                      text-overflow:ellipsis;
-                  };
-                  p{ font-size: 13px; color:#666; line-height: 22px; width:200px; overflow: hidden; white-space: nowrap; text-overflow:ellipsis;}
-                  .grade{ font-weight: 700; color: #faaf00; font-size: 15px;};
-                  img{ width:50px; position: absolute; right:10px; top: 5px;}
-             }
+#content .movie_body {
+  position: absolute;
+  top: 95px;
+  left: 0;
+  right: 0;
+  bottom: 45px;
+  overflow: auto;
+  ul {
+    margin: 0 12px;
+    overflow: hidden;
+    li {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px #e6e6e6 solid;
+      padding-bottom: 10px;
+      .pic_show {
+        width: 64px;
+        height: 90px;
+        img {
+          width: 100%;
         }
-      };
-      .btn_pre{ width:47px; height:27px; line-height: 28px; text-align: center; background-color: #f03d37; color: #fff; border-radius: 4px; font-size: 12px; cursor: pointer;};
-      // .btn_pre{ background-color: #3c9fe6;};
-
+      }
+      .info_list {
+        margin-left: 10px;
+        flex: 1;
+        position: relative;
+        h2 {
+          font-size: 17px;
+          line-height: 24px;
+          width: 150px;
+          overflow: hidden;
+          font-weight: 700;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        p {
+          font-size: 13px;
+          color: #666;
+          line-height: 22px;
+          width: 200px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .grade {
+          font-weight: 700;
+          color: #faaf00;
+          font-size: 15px;
+        }
+        img {
+          width: 50px;
+          position: absolute;
+          right: 10px;
+          top: 5px;
+        }
+      }
     }
+  }
+  .btn_pre {
+    width: 47px;
+    height: 27px;
+    line-height: 28px;
+    text-align: center;
+    background-color: #f03d37;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  // .btn_pre{ background-color: #3c9fe6;};
+}
 </style>

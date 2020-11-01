@@ -7,14 +7,22 @@
           <div class="city_hot">
             <h2>热门城市</h2>
             <ul class="clearfix">
-              <li v-for="item in hotlist" :key="item.id" @tap='handleToCity(item.nm,item.id)'>{{item.nm}}</li>
+              <li
+                v-for="item in hotlist"
+                :key="item.id"
+                @tap="handleToCity(item.nm,item.id)"
+              >{{item.nm}}</li>
             </ul>
           </div>
           <div class="city_sort" ref="city_sort">
             <div v-for="item in cityData" :key="item.id">
               <h2>{{item.index}}</h2>
               <ul>
-                <li v-for="itemlist in item.list" :key="itemlist.id"  @tap='handleToCity(itemlist.nm,itemlist.id)'>{{itemlist.nm}}</li>
+                <li
+                  v-for="itemlist in item.list"
+                  :key="itemlist.id"
+                  @tap="handleToCity(itemlist.nm,itemlist.id)"
+                >{{itemlist.nm}}</li>
               </ul>
             </div>
           </div>
@@ -44,33 +52,7 @@ export default {
     };
   },
   mounted() {
-    //增强性能，判断是否有存储值
-    let citylist = window.localStorage.getItem("cityData"),
-	    hotlist = window.localStorage.getItem("hotlist"),
-	    letterData = window.localStorage.getItem("letterData");
-	
-    if (citylist && hotlist&&letterData) {
-      this.cityData = JSON.parse(citylist);
-	  this.hotlist = JSON.parse(hotlist);
-	  this.letterData=JSON.parse(letterData);
-      this.isloading = false;
-    } else {
-      this.$service.get("/dianying/cities.json").then(res => {
-        console.log(res);
-        const objdata = res.data.cts;
-        let citylist = this.toData(objdata),
-          hotlist = this.hotData(citylist),
-          letterData = this.letterArr(citylist);
-        this.cityData = citylist;
-        this.hotlist = hotlist;
-        this.letterData = letterData;
-		this.isloading = false;
-		//通过localStorge本地存储
-        window.localStorage.setItem("cityData", JSON.stringify(citylist));
-		window.localStorage.setItem("hotlist", JSON.stringify(hotlist));
-		window.localStorage.setItem("letterData", JSON.stringify(letterData));
-      });
-    }
+    this.getcitys();
   },
   methods: {
     //城市数据分类获取
@@ -145,14 +127,42 @@ export default {
       const h = this.$refs.city_sort.getElementsByTagName("h2");
       //  this.$refs.city_sort.parentNode.scrollTop=h[index].offsetTop
       this.$refs.city_List.toScrollTop(-h[index].offsetTop);
-	},
-	handleToCity(nm,id){
-       this.$store.commit('city/CITY_INFO',{nm,id});
-       //存到本地存储里面
-       window.localStorage.setItem('nm',nm)
-        window.localStorage.setItem('id',id)
-       this.$router.push('/nowplaying')
-	}
+    },
+    //点击对应的城市将路由跳转到正在热映并且改变状态管理中的数据,实时更新地址对应数据
+    handleToCity(nm, id) {
+      this.$store.commit("city/CITY_INFO", { nm, id });
+      //存到本地存储里面
+      window.localStorage.setItem("nm", nm);
+      window.localStorage.setItem("id", id);
+      this.$router.push("/nowplaying");
+    },
+    //异步请求后台数据并将拿到的数据做处理
+    async getcitys() {
+      let citylist = window.localStorage.getItem("cityData"),
+        hotlist = window.localStorage.getItem("hotlist"),
+        letterData = window.localStorage.getItem("letterData");
+
+      if (citylist && hotlist && letterData) {
+        this.cityData = JSON.parse(citylist);
+        this.hotlist = JSON.parse(hotlist);
+        this.letterData = JSON.parse(letterData);
+        this.isloading = false;
+      } else {
+        let res = await this.$api.getCity();
+        const objdata = res.data.cts;
+        let citylist = this.toData(objdata),
+            hotlist = this.hotData(citylist),
+            letterData = this.letterArr(citylist);
+            this.cityData = citylist;
+            this.hotlist = hotlist;
+            this.letterData = letterData;
+            this.isloading = false;
+        //通过localStorge本地存储
+        window.localStorage.setItem("cityData", JSON.stringify(citylist));
+        window.localStorage.setItem("hotlist", JSON.stringify(hotlist));
+        window.localStorage.setItem("letterData", JSON.stringify(letterData));
+      }
+    }
   }
 };
 </script>

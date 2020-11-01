@@ -56,8 +56,8 @@ export default {
     //   });
       
      //数据模拟写死版
-     let nm='上海'
-     console.log(this.$store.state.city.nm)
+     let nm='上海',
+         id='10';
        //判断当选择城市和获取城市一致时不弹窗
       if(this.$store.state.city.nm==nm) return 
       messageBox({
@@ -66,10 +66,11 @@ export default {
           cancel: "取消",
           ok: "切换城市",
           //处理当点击切换的时候,修改本地存储来改变城市
-          handleOk() {
+          handleOk() { 
               window.localStorage.setItem('nm',nm)
+              window.localStorage.setItem('id',id)
               window.location.reload()
-            //   this.$store.state.city.nm=nm
+              // this.$store.state.city.nm=nm
             //   this.$store.state.city.id=id
           }
         });

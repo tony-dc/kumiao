@@ -1,97 +1,84 @@
 <template>
   <div class="movie_body">
-    <Loading v-if='isloading' />
-    <Scroller v-else :handleToScroll='handleToScroll'  :handleToTouchEnd='handleToTouchEnd'>
-          <ul>
-            <li class="msg">{{pulldownMsg}}</li>
-            <li v-for="(item,index) in movieList" :key="index">
-              <div class="pic_show" @tap='handleToDetail(item.id)'>
-                <img :src="item.img|setWH('128.180')" />
-              </div>
-              <div class="info_list">
-                <h2 @tap='handleToDetail(item.id)'>
-                  {{item.nm}}
-                  <img src="@/assets/maxs.png" alt v-if="item.version" />
-                </h2>
-                <p>
-                  观众评
-                  <span class="grade">{{item.sc}}</span>
-                </p>
-                <p>主演: {{item.star}}</p>
-                <p>{{item.showInfo}}</p>
-              </div>
-              <div class="btn_mall">购票</div>
-            </li>
-          </ul>
+    <Loading v-if="isloading" />
+    <Scroller v-else :handleToScroll="handleToScroll" :handleToTouchEnd="handleToTouchEnd">
+      <ul>
+        <li class="msg">{{pulldownMsg}}</li>
+        <li v-for="(item,index) in movieList" :key="index">
+          <div class="pic_show" @tap="handleToDetail(item.id)">
+            <img :src="item.img|setWH('128.180')" />
+          </div>
+          <div class="info_list">
+            <h2 @tap="handleToDetail(item.id)">
+              {{item.nm}}
+              <img src="@/assets/maxs.png" alt v-if="item.version" />
+            </h2>
+            <p>
+              观众评
+              <span class="grade">{{item.sc}}</span>
+            </p>
+            <p>主演: {{item.star}}</p>
+            <p>{{item.showInfo}}</p>
+          </div>
+          <div class="btn_mall">购票</div>
+        </li>
+      </ul>
     </Scroller>
   </div>
 </template>
 <script>
-// import BScroll from "better-scroll";
 export default {
   name: "NowPlaying",
   data() {
     return {
       movieList: [],
       pulldownMsg: "",
-      isloading:true,
-      beforeId:-1
+      isloading: true,
+      beforeId: -1
     };
   },
   //mounted 生命周期如果有keep-alive缓冲，就不会触发了，解决办法用activated，只有当有keepalive出现的时候才能用这个声明周期
   activated() {
-    // console.log(123)
-    let cityId=this.$store.state.city.id
-    if(cityId===this.beforeId) return 
-    this.isloading=true
-    console.log(123)
-    this.$service.get("/ajax/movieOnInfoList?cityId="+cityId).then(res => {
-      this.movieList = res.data.movieList;
-      this.isloading=false
-      this.beforeId=cityId
-      //等待数据渲染完毕以后再执行scorll
-      // this.$nextTick(() => {
-      //   let scroll = new BScroll(this.$refs.movie_body, {
-      //     tap: true,
-      //     probeType: 1
-      //   });
-      //   scroll.on("scroll", pos => {
-      //     
-      //   });
-      //   scroll.on("touchEnd", pos => {
-      //     if (pos.y > 30) {
-      //       this.$service.get("/ajax/movieOnInfoList?cityId=10").then(res => {
-      //         this.pulldownMsg = "更新成功";
-      //         setTimeout(() => {
-      //           this.movieList = res.data.movieList;
-      //            this.pulldownMsg =''
-      //         }, 1000);
-      //       });
-      //     }
-      //   });
-      // });
-    });
+    this.getdata();
   },
   methods: {
     handleToScroll(pos) {
       if (pos.y > 30) {
-            this.pulldownMsg = "正在更新中";
-          }
+        this.pulldownMsg = "正在更新中";
+      }
     },
-    handleToTouchEnd(pos){
-       if (pos.y > 30) {
-        this.$service.get("/ajax/movieOnInfoList?cityId=10").then(res =>{ 
-              this.pulldownMsg = "更新成功";
-              setTimeout(() => {
-                this.movieList = res.data.movieList;
-                 this.pulldownMsg =''
-              }, 1000);
-            });
-          }
+    handleToTouchEnd(pos) {
+      if (pos.y > 30) {
+        this.updateData()
+      }
     },
-    handleToDetail(moveId){
+    handleToDetail(moveId) {
       //编程式路由导航
-      this.$router.push('/movie/detail/1/'+moveId)
+      this.$router.push("/movie/detail/1/" + moveId);
+    },
+    async getdata() {
+      let cityId = this.$store.state.city.id;
+      if (cityId === this.beforeId) return;
+      this.isloading = true;
+      let result = await this.$api.getMovieOnInfoList(cityId);
+      if (result) {
+        this.movieList = result.movieList;
+        //数据请求成功后将loading状态变为false
+        this.isloading = false;
+        //将当前储存的城市id赋值给初始值,方便后面进行比较,如果id值相同,城市没有切换,泽不请求数据,提升性能
+        this.beforeId=cityId
+      }
+    },
+    async updateData(){
+       let cityId = this.$store.state.city.id,
+        result = await this.$api.getMovieOnInfoList(cityId);
+        if(result){
+          this.pulldownMsg = "更新成功";
+          setTimeout(() => {
+            this.movieList = result.movieList;
+            this.pulldownMsg = "";
+          }, 1000);
+        }
     }
   }
 };
@@ -107,10 +94,10 @@ export default {
   ul {
     margin: 0 12px;
     overflow: hidden;
-    .msg{
-      margin:0;
-      padding:0;
-      border:none;
+    .msg {
+      margin: 0;
+      padding: 0;
+      border: none;
     }
     li {
       margin-top: 12px;

@@ -3,7 +3,7 @@
     <Header title="影片详情">
       <i class="iconfont icon-right" @touchstart="handleToBack"></i>
     </Header>
-    <Loading v-if='isloading' />
+    <Loading v-if="isloading" />
     <div class="content" v-else>
       <div class="detail_list">
         <div
@@ -48,7 +48,7 @@ export default {
     return {
       movieData: [],
       active: "",
-       isloading:true,
+      isloading: true
     };
   },
   filters: {
@@ -61,26 +61,31 @@ export default {
     Header
   },
   mounted() {
-    const moveId = this.moveId;
-    //第二种方法通过$route.params来获取动态id
-    // const moveId=this.$route.params.moveId
-    this.$service.get("/ajax/detailmovie?movieId=" + moveId).then(res => {
-      this.movieData = res.data.detailMovie;
-      this.isloading=false;
-      console.log(this.movieData);
-      this.$nextTick(() => {
-        new Swiper(this.$refs.detail_player, {
-          slidesPerView: "auto",
-          freeMode: true,
-          freeModeSticky: true
-        });
-      });
-    });
+    this.getDetailData();
   },
   methods: {
     handleToBack() {
       //编程式路由
       this.$router.back();
+    },
+    async getDetailData() {
+      const moveId = this.moveId;
+      //第二种方法通过$route.params来获取动态id
+      // const moveId=this.$route.params.moveId
+      // this.$service.get("/ajax/detailmovie?movieId=" + moveId).then(res => {
+      let res = await this.$api.getDetail(moveId);
+      if (res) {
+        this.movieData = res.detailMovie;
+        this.isloading = false;
+        console.log(this.movieData);
+        this.$nextTick(() => {
+          new Swiper(this.$refs.detail_player, {
+            slidesPerView: "auto",
+            freeMode: true,
+            freeModeSticky: true
+          });
+        });
+      }
     }
   }
 };
@@ -171,8 +176,8 @@ export default {
           height: 100px;
           margin-right: 20px;
           div {
-              width: 100%;
-              height: 100%;
+            width: 100%;
+            height: 100%;
             img {
               width: 100%;
               height: 100%;

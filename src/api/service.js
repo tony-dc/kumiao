@@ -8,13 +8,4 @@ const service=axios.create({
         'Content-type':'application/json;charset:utf-8'
     }
 })
-// const services=axios.create({
-//     // baseURL:'http://localhost:5000',
-//     baseURL:'/epi',
-//     timeout:3000,
-//     withCredentials:false,
-//     headers:{
-//         'Content-type':'application/json;charset:utf-8'
-//     }
-// })
 export default service  

@@ -1,29 +1,29 @@
 <template>
   <div class="cinema_body">
-    <Loading v-if='isloading' />
+    <Loading v-if="isloading" />
     <Scroller v-else>
-          <ul>
-            <li v-for="item in cinemaList" :key="item.id">
-              <div>
-                <span>{{item.nm}}</span>
-                <span class="q">
-                  <span class="price">{{item.sellPrice}}</span> 元起
-                </span>
-              </div>
-              <div class="address">
-                <span>{{item.addr}}</span>
-                <span>{{item.distance}}</span>
-              </div>
-              <div class="card">
-                <div
-                  v-for="(itemson,index) in item.tag"
-                  :key="index"
-                  v-if="itemson===1"
-                  :class="index|cardClass"
-                >{{index|formatCard}}</div>
-              </div>
-            </li>
-          </ul>
+      <ul>
+        <li v-for="item in cinemaList" :key="item.id">
+          <div>
+            <span>{{item.nm}}</span>
+            <span class="q">
+              <span class="price">{{item.sellPrice}}</span> 元起
+            </span>
+          </div>
+          <div class="address">
+            <span>{{item.addr}}</span>
+            <span>{{item.distance}}</span>
+          </div>
+          <div class="card">
+            <div
+              v-for="(itemson,index) in item.tag"
+              :key="index"
+              v-if="itemson===1"
+              :class="index|cardClass"
+            >{{index|formatCard}}</div>
+          </div>
+        </li>
+      </ul>
     </Scroller>
   </div>
 </template>
@@ -33,20 +33,33 @@ export default {
   data() {
     return {
       cinemaList: [],
-      isloading:true,
-       beforeId:-1
+      isloading: true,
+      beforeId: -1
     };
   },
   mounted() {
-    let cityId=this.$store.state.city.id 
-    if(cityId===this.beforeId) return 
-    this.isloading=true
-    this.$service.get("/ajax/cinemaList?ci="+cityId).then(res => {
-      this.cinemaList = res.data.cinemas;
-      console.log(this.cinemaList);
-      this.isloading=false
-      this.beforeId=cityId
-    });
+    this.getCinemaList();
+    // let cityId=this.$store.state.city.id
+    // if(cityId===this.beforeId) return
+    // this.isloading=true
+    // this.$service.get("/ajax/cinemaList?ci="+cityId).then(res => {
+    //   this.cinemaList = res.data.cinemas;
+    //   this.isloading=false
+    //   this.beforeId=cityId
+    // });
+  },
+  methods: {
+    async getCinemaList() {
+      let cityId = this.$store.state.city.id;
+      if (cityId === this.beforeId) return;
+      this.isloading = true;
+      let result = await this.$api.getcinamedata(cityId);
+      if (result) {
+        this.cinemaList = result.cinemas;
+        this.isloading = false;
+        this.beforeId = cityId;
+      }
+    }
   },
   filters: {
     formatCard(index) {
