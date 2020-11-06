@@ -1,12 +1,12 @@
 <template>
-  <div>
-       修改密码：
-  </div>
+    <div>
+         修改密码
+    </div>
 </template>
 <script>
 export default {
-    name:'findpassword'
-}
+     name:'findpassword'
+    }
 </script>
 <style lang="scss" scoped>
     
