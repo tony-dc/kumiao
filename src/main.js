@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import axios from 'axios'
+Vue.prototype.$axios=axios
 //二次封装请求数据接口方法
 import api from './api'
 Vue.prototype.$api=api

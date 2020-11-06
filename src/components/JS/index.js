@@ -1,19 +1,20 @@
 import Vue from 'vue'
 import MessageBox from './Messagebox'
 export let messageBox=(function(){
-    let defaults={        //默认值,
-          title: '' ,  
-          content:'',
-          cancel:'',
-          ok:'',
-          handleCancel:null,
-          handleOk:null
-    }
+    
     return function(options){  //配置参数
+        let defaults={        //默认值,
+            title: '' ,  
+            content:'',
+            cancel:'',
+            ok:'',
+            handleCancel:null,
+            handleOk:null
+      }
+       let Mycomponent=Vue.extend(MessageBox)
          for(let key in options){
             defaults[key]=options[key]
          }
-         let Mycomponent=Vue.extend(MessageBox)
          let vm=new Mycomponent({
              el:document.createElement('div'),
              data:{

@@ -25,7 +25,8 @@ export default {
   },
   mounted() {
     //实现公共组件betterscroll组件功能,nextTick当数据加载完以后实现scroll功能
-    // this.$nextTick(() => {
+    this.$nextTick(() => {
+      console.log(1)
       var scrolls = new BScroll(this.$refs.swapper, {
         tap:true, 
         click:true,
@@ -39,7 +40,7 @@ export default {
        scrolls.on('touchEnd',(pos)=>{
            this.handleToTouchEnd(pos)
        })
-    // });
+    });
   }
 };
 </script>
