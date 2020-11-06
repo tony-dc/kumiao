@@ -15,7 +15,7 @@ export default {
         {
             path: 'findpassword',
             component: () =>
-                import ('@/components/Findpassword')
+                import ('@/components/FindPassword')
         },
         {
             path: 'center',

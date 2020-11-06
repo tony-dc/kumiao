@@ -52,7 +52,8 @@ export default {
               ok: "确定",
               handleOk() {
                 This.$axios.get("/api2/users/getUser").then((res) => {
-                  const booler= res.data.satus;
+                  const booler= res.data.status;
+                  console.log(booler)
                   if (booler===0) {
                     This.$store.commit("user/USER_INFO", {
                       "nm": res.data.data.username,

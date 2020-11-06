@@ -1,32 +1,19 @@
 <template>
-<<<<<<< HEAD
-    <div>
-         注册页：
-    </div>
-</template>
-<script>
-export default {
-     name:'register'
-    }
-</script>
-<style lang="scss" scoped>
-    
-=======
   <div class="register_body">
     <div class="register_content">
       <h2>欢迎注册网站会员<i></i></h2>
       <ul>
-        <li><span>用户名:</span><input type="text" value="" /></li>
+        <li><span>用&emsp;户&emsp;名:</span><input type="text" value="" /></li>
         <li><span>设置密码:</span><input type="text" value="" /></li>
         <li><span>确认密码:</span><input type="text" value="" /></li>
         <li class="verify">
-        <span>邮箱:</span>
+        <span>邮&emsp;&emsp;&emsp;&emsp;&emsp;箱:</span>
         <input type="text" value="" />
-        <button>验证码</button>
+        <button class="btn">验证码</button>
         </li>
-        <li><span>验证码: </span><input type="text" value="" /></li>
-        <li>
-          <button>立即注册</button>
+        <li><span>验 证 码: </span><input type="text" value="" /></li>
+        <li class="register_li">
+          <button class="register_btn">立即注册</button>
         </li>
       </ul>
     </div>
@@ -51,33 +38,68 @@ export default {
       text-align: center;
       line-height: 30px;
       color: #58a;
-      border-bottom: 1px solid red;
+      border-bottom: 1px solid #ccc;
     }
     ul {
       width: 100%;
       height: 300px;
       li {
-        // margin-top: 10px;
         width: 100%;
         height: 60px;
+        list-style: none;
         text-align: center;
+        border:none;
         line-height: 60px;
         border-bottom:1px solid #888;
-        span {
-          width: 72px;
-          line-height: 60px;
-          margin-right: 10px;
-        }
+        // span {
+          
+
+        //   // margin-right: 10px;
+        // }
         input {
           width: 200px;
-          height: 20px;
+          height: 22px;
+          outline: none;
+           border:none;
+           border-radius:5px;
         }
       }
       .verify{
-        display: flex
+        // display: flex;
+        // justify-content: space-around;
+        // align-items: center;
+        position: relative;
+        span{
+          margin-right:20px;
+        }
+        .btn{
+          position: absolute;
+          right:-23px;
+          top:19px;
+          border-radius:5px;
+          font-size:16px;
+          padding:3px;
+          outline: none;
+          border:none;
+          color:#58a
+        }
       }
+      .register_li{
+          .register_btn{
+            // width:150px;
+            // height:40px;
+            font-size:22px;
+             outline: none;
+              border:none;
+              // line-height: 40px;
+              color:#fff;
+              padding:8px 10px;
+              background-color: green;
+              border-radius:15px;
+          }
+      }
+
     }
   }
 }
->>>>>>> abaa3d056be3139bbae09df4aa595ae0e8ddc3dc
 </style>
