@@ -3,7 +3,11 @@
     <h2>{{title}}</h2>
     <p>{{content}}</p>
     <div class="sure">
+<<<<<<< HEAD
       <div v-if='cancel' @touchstart="handleCancel">{{cancel}}</div>
+=======
+      <div v-if='cancel'  @touchstart="handleCancel">{{cancel}}</div>
+>>>>>>> abaa3d056be3139bbae09df4aa595ae0e8ddc3dc
       <div v-if='ok' @touchstart="handleOk">{{ok}}</div>
     </div>
   </div>
