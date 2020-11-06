@@ -3,13 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
-<<<<<<< HEAD
-Vue.prototype.$axios=axios
-//二次封装请求数据接口方法
-=======
 Vue.prototype.$axios = axios
     //二次封装请求数据接口方法
->>>>>>> abaa3d056be3139bbae09df4aa595ae0e8ddc3dc
 import api from './api'
 Vue.prototype.$api = api
     //注册全局better-scroll组件
