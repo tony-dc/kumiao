@@ -159,6 +159,5 @@ export default {
     font-size: 12px;
     cursor: pointer;
   }
-  // .btn_pre{ background-color: #3c9fe6;};
 }
 </style>

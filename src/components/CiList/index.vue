@@ -39,14 +39,6 @@ export default {
   },
   mounted() {
     this.getCinemaList();
-    // let cityId=this.$store.state.city.id
-    // if(cityId===this.beforeId) return
-    // this.isloading=true
-    // this.$service.get("/ajax/cinemaList?ci="+cityId).then(res => {
-    //   this.cinemaList = res.data.cinemas;
-    //   this.isloading=false
-    //   this.beforeId=cityId
-    // });
   },
   methods: {
     async getCinemaList() {
@@ -135,7 +127,6 @@ export default {
         span:nth-of-type(2) {
           display: block;
           line-height: 1.4em;
-          //  float: right;
         }
       }
       .card {

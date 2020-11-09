@@ -52,8 +52,7 @@ export default {
               ok: "确定",
               handleOk() {
                 This.$axios.get("/api2/users/getUser").then((res) => {
-                  const booler= res.data.status;
-                  console.log(booler)
+                  const booler= res.data.satus;
                   if (booler===0) {
                     This.$store.commit("user/USER_INFO", {
                       "nm": res.data.data.username,
@@ -75,7 +74,6 @@ export default {
   },
 };
 </script>
-
  <style lang="scss" scoped>
 #content .login_body {
   background-color: #fff;

@@ -11,16 +11,13 @@ export default {
     //路由前置守卫
      beforeRouteEnter (to, from, next) {
        axios.get('/api2/users/getUser').then(res=>{
-         const result=res.data.status
+         const result=res.data.satus
          if(result===0){
            next()
          }else{
            next('/mine/login')  
          }
        })
-     },
-     created(){
-       console.log(this.$store.state.user.nm)
      },
     methods:{
       handleToBack(){
