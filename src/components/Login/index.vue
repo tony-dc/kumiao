@@ -51,8 +51,8 @@ export default {
               content: res.data.msg,
               ok: "确定",
               handleOk() {
-                This.$router.push("/mine/center");
-              },
+                This.$router.push("/mine/center")
+              }
             });
           } else {
             messageBox({

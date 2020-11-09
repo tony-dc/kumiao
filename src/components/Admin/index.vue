@@ -1,35 +1,30 @@
 <template>
   <div>
     <el-container>
-      <el-header>酷喵电影后台管理系统</el-header>
+      <el-header>酷喵电影后台管理系统 欢迎：{{$store.state.user.nm}}</el-header>
       <el-container>
         <el-aside width="200px">
             <el-menu
-              default-active="2"
-              class="el-menu-vertical-demo"
-              @open="handleOpen"
-              @close="handleClose"
+              default-active="1"
             >
-              <el-submenu index="1">
+              <el-menu-item index="1">
                   <i class="el-icon-location"></i>
-                  <span slot="title">导航一</span>
-              </el-submenu>
+                  <router-link to='/admin/user' slot="title" tag='span'>用户管理</router-link>
+              </el-menu-item>
               <el-menu-item index="2">
                 <i class="el-icon-menu"></i>
-                <span slot="title">导航二</span>
+                <router-link to='/admin/adminmovies' slot="title" tag='span'>电影管理</router-link>
               </el-menu-item>
               <el-menu-item index="3">
                 <i class="el-icon-document"></i>
-                <span slot="title">导航三</span>
-              </el-menu-item>
-              <el-menu-item index="4">
-                <i class="el-icon-setting"></i>
-                <span slot="title">导航四</span>
+                <router-link to='/admin/admincinemas' slot="title" tag='span'>影院管理</router-link>
               </el-menu-item>
             </el-menu>
         </el-aside>
         <el-container>
-          <el-main>Main</el-main>
+          <el-main>
+             <router-view />
+          </el-main>
           <el-footer>Footer</el-footer>
         </el-container>
       </el-container>
@@ -37,8 +32,34 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   name: "admin",
+  //前置路由守卫
+  // beforeRouteEnter: (to, from, next) => {
+  //    axios.get('/api2/admin').then(res=>{
+  //        const result=res.data.status
+  //        console.log(res)
+  //        if(result===0){
+  //          next(vm=>{
+  //             vm.$store.commit("user/USER_INFO", {
+  //                     nm: res.data.data.username,
+  //                     isAdmin:res.data.data.isAdmin
+  //                   })
+  //          })
+  //        }else{
+  //          next('/mine/login')  
+  //        }
+  //      })
+  // },
+    methods: {
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      }
+    }
 };
 </script>
 <style lang="scss" scoped>
@@ -62,7 +83,6 @@ export default {
   background-color: #e9eef3;
   color: #333;
   text-align: center;
-  line-height: 160px;
 }
 
 body > .el-container {

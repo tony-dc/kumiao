@@ -98,10 +98,7 @@ export default {
                   messageBox({
                     title:'注册',
                     content:res.data.msg,
-                    ok:'确定',
-                    handleOk(){
-                      // This.$router.push('/mine/login')
-                    }
+                    ok:'确定'
                   })
                 }
           })

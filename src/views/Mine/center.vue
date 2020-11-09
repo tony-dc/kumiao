@@ -14,7 +14,7 @@ export default {
     //路由前置守卫
      beforeRouteEnter (to, from, next) {
        axios.get('/api2/users/getUser').then(res=>{
-         const result=res.data.satus
+         const result=res.data.status
          console.log(res)
          if(result===0){
            next(vm=>{
