@@ -51,14 +51,6 @@ export default {
               content: res.data.msg,
               ok: "确定",
               handleOk() {
-                This.$axios.get("/api2/users/getUser").then((res) => {
-                  const booler= res.data.satus;
-                  if (booler===0) {
-                    This.$store.commit("user/USER_INFO", {
-                      "nm": res.data.data.username,
-                    });
-                  }
-                });
                 This.$router.push("/mine/center");
               },
             });
