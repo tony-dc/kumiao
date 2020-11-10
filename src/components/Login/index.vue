@@ -45,6 +45,7 @@ export default {
         })
         .then((res) => {
           const result = res.data.status;
+          console.log(result)
           if (result === 0) {
             messageBox({
               title: "登录状态",

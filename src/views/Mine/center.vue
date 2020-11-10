@@ -14,7 +14,7 @@ export default {
     //路由前置守卫
      beforeRouteEnter (to, from, next) {
        axios.get('/api2/users/getUser').then(res=>{
-         const result=res.data.status
+         const result=res.data.satus
          console.log(res)
          if(result===0){
            next(vm=>{
@@ -23,6 +23,7 @@ export default {
                       isAdmin:res.data.data.isAdmin
                     })
            })
+          window.localStorage.setItem('username',res.data.data.username)
          }else{
            next('/mine/login')  
          }

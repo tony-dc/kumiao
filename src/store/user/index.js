@@ -1,5 +1,5 @@
 const state = {
-    nm: '',
+    nm: window.localStorage.getItem('username') || '',
     isAdmin: false
 }
 const mutations = {
