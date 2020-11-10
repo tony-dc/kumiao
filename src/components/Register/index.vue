@@ -10,7 +10,7 @@
         <span>邮箱</span>
         <i>:</i>
         <input v-model="email" type="text" value="" />
-        <button class="btn" @touchstart='handleGetverify'>验证码</button>
+        <button class="btn" @touchstart='handleGetverify' :disabled='disabled'>{{verifyInfo}}</button>
         </li>
         <li>
         <span>验 证 码</span>
@@ -38,19 +38,36 @@ export default {
         currentpsd:'',
         email:'',
         verify:'',
+        verifyInfo:'发送验证码',
+        disabled:false
     }
   },
   methods:{
     //点击获得验证码方法
     handleGetverify(){
+      const This=this
        if(this.email){
+         if(this.disabled) return
          this.$axios.get('/api2/users/verify?email='+this.email).then(res=>{
            const status=res.data.status
            if(status===0){
               messageBox({
                  title:'发送验证码',
                  content:'发送成功',
-                 ok:'确定'
+                 ok:'确定',
+                 handleOk(){
+                       This.disabled=true
+                       let count=60
+                       let timer=setInterval(()=>{
+                             count--
+                             This.verifyInfo='剩余'+count+'秒'
+                             if(count===0){
+                                    This.verifyInfo='发送验证码'
+                                    This.disabled=false
+                                    clearInterval(timer)
+                             }
+                       },1000)
+                 }
               })
            }else{
              messageBox({
@@ -68,6 +85,7 @@ export default {
          })
        }
     },
+
     //点击注册方法
     handleToRegister(){
       //复制this
@@ -76,7 +94,6 @@ export default {
       if(this.email!==''&&this.username!==''&&this.password!==''&&this.verify!==''&&this.currentpsd!==''){
            //密码确认机制，必须两次一次才发起请求
           if(this.password===this.currentpsd){
-            console.log(11)
             this.$axios.post('/api2/users/register',{
               'username':this.username,
               'password':this.password,
