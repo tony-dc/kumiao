@@ -15,7 +15,7 @@
           <span>邮箱</span>
           <i>:</i>
           <input v-model="email" type="text" value="" />
-          <button class="btn" @touchstart="handleGetverify">验证码</button>
+          <button class="btn" @touchstart="handleGetverify" :disabled='disabled'>{{verifyInfo}}</button>
         </li>
         <li>
           <span>验 证 码</span>
@@ -45,11 +45,14 @@ export default {
       password: "",
       email: "",
       verify: "",
+      verifyInfo:'验证码',
+      disabled:false
     };
   },
   methods: {
     //提交验证码功能
     handleGetverify() {
+      const This=this
       if (this.email) {
         this.$axios
           .get("/api2/users/verify?email=" + this.email)
@@ -60,6 +63,9 @@ export default {
                 title: "发送验证码",
                 content: "发送成功",
                 ok: "确定",
+                handleOk(){
+                   This.getTime()
+                }
               });
             } else {
               messageBox({
@@ -111,7 +117,20 @@ export default {
               ok:"确定"
           })
       }
-   }
+   },
+    getTime(){
+      let count=60;
+      let timer=setInterval(()=>{
+         count--
+         this.verifyInfo='剩余'+count+'秒'
+         this.disabled=true
+         if(count===0){
+             this.verifyInfo='验证码'
+             this.disabled=false
+             clearInterval(timer)
+         }
+      },1000)
+    }
   },
 };
 </script>

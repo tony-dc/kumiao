@@ -49,7 +49,7 @@ export default {
     return {
       tableData: [],
       currentpage:1,
-      pageSize:3
+      pageSize:4
     };
   },
   //分页功能
@@ -71,7 +71,7 @@ export default {
       const { email, isFreeze } = column;
       console.log(email, isFreeze);
       this.$axios
-        .post("/api2/admin/updateIsfreeze", {
+        .post("/api2/admin/updatefreeze", {
           email: email,
           isFreeze: !isFreeze,
         })

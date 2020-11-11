@@ -38,7 +38,7 @@ export default {
         currentpsd:'',
         email:'',
         verify:'',
-        verifyInfo:'发送验证码',
+        verifyInfo:'验证码',
         disabled:false
     }
   },
