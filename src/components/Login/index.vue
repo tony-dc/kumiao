@@ -16,6 +16,9 @@
         placeHolder="请输入您的密码"
       />
     </div>
+    <div>
+       <input type="text" class="login_text" v-model='verifyImg' placeHolder="请输入验证码"><img src="/api2/users/verifyImg" alt="" @touchstart='handleToverifyImg'>
+    </div>
     <div class="login_btn">
       <input type="submit" value="登录" @touchstart="handleToLogin" />
     </div>
@@ -33,6 +36,7 @@ export default {
     return {
       username: "",
       password: "",
+      verifyImg:''
     };
   },
   methods: {
@@ -42,6 +46,7 @@ export default {
         .post("/api2/users/login", {
           username: this.username,
           password: this.password,
+          verifyImg:this.verifyImg
         })
         .then((res) => {
           const result = res.data.status;
@@ -64,7 +69,11 @@ export default {
           }
         });
     },
-  },
+    //点击切换随机验证码
+    handleToverifyImg(ev){
+       ev.target.src='/api2/users/verifyImg?'+Math.random()
+    }
+  }
 };
 </script>
  <style lang="scss" scoped>
