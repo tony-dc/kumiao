@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Header  title='登录酷喵'  />
+        <Header  :title='title'  />
         	<div id="content">
                 <router-view />  
         	</div>
@@ -12,6 +12,11 @@
     import TabBar from '@/components/TabBar' 
     export default {
         name:'Mine',
+        data(){
+            return {
+                title:'登录酷喵'
+            }
+        },
         components:{
             Header,
             TabBar
