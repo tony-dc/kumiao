@@ -1,6 +1,15 @@
 <template>
   <div>
     <el-table :data="NowList" border style="width: 100%">
+     <el-table-column
+        prop="userHeader"
+        align="center"
+        label="用户头像"
+      >
+       <template slot-scope="scope">
+         <img :src="scope.row.userHeader" alt="" class="headerimg">
+       </template>
+      </el-table-column>
       <el-table-column
         prop="date"
         align="center"
@@ -141,5 +150,11 @@ export default {
 <style scoped>
 .el-pagination{
   margin-top:10px;
+}
+.headerimg{
+  width: 50px;
+  height: 50px;
+  border-radius:50%;
+  
 }
 </style>

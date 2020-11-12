@@ -5,6 +5,11 @@
        <div v-if='$store.state.user.isAdmin'>用户权限：管理员 
        <a href="/admin" target="_blank">管理员界面</a></div>
        <div v-else>用户权限：普通用户</div>
+       <div>
+          用户头像：<input type="file" name="" id="">
+          <img src="" alt="">
+       </div>
+       
   </div>
 </template>
 <script>
