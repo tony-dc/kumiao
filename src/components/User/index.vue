@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-table :data="NowList" border style="width: 100%">
-<<<<<<< HEAD
      <el-table-column
         prop="userHeader"
         align="center"
@@ -26,16 +25,6 @@
         align="center"
         label="邮箱"
       ></el-table-column>
-=======
-      <el-table-column align="center" prop="urlHeader" label="用户头像">
-        <template slot-scope="scope">
-          <img :src="scope.row.userHeader" alt class="userheader" />
-        </template>
-      </el-table-column>
-      <el-table-column prop="date" align="center" label="日期"></el-table-column>
-      <el-table-column prop="username" align="center" label="姓名"></el-table-column>
-      <el-table-column prop="email" align="center" label="邮箱"></el-table-column>
->>>>>>> 20ababc2e83840c68415b665f446bdce3ac4cf3e
       <el-table-column prop="hanle" align="center" label="操作">
         <template slot-scope="scope">
           <el-button

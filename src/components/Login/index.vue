@@ -17,7 +17,6 @@
       />
     </div>
     <div>
-<<<<<<< HEAD
       <input
         v-model="verifyImg"
         class="login_text"
@@ -28,9 +27,6 @@
           <img class='img' src="/api2/users/verifyImg" alt="" >
           <span class="changeImg" @touchstart='handlechangeVerifyImg'>看不清楚换一张</span>
       </div>
-=======
-       <input type="text" class="login_text" v-model='verifyImg' placeHolder="请输入验证码"><img src="/api2/users/verifyImg" alt="" @touchstart='handleToverifyImg'>
->>>>>>> 20ababc2e83840c68415b665f446bdce3ac4cf3e
     </div>
     <div class="login_btn">
       <input type="submit" value="登录" @touchstart="handleToLogin" />
@@ -49,11 +45,7 @@ export default {
     return {
       username: "",
       password: "",
-<<<<<<< HEAD
       verifyImg:""
-=======
-      verifyImg:''
->>>>>>> 20ababc2e83840c68415b665f446bdce3ac4cf3e
     };
   },
   methods: {
@@ -86,19 +78,11 @@ export default {
           }
         });
     },
-<<<<<<< HEAD
     handlechangeVerifyImg(){
        const img=document.querySelector('.img')
        img.src='/api2/users/verifyImg?'+Math.random()
     }
   },
-=======
-    //点击切换随机验证码
-    handleToverifyImg(ev){
-       ev.target.src='/api2/users/verifyImg?'+Math.random()
-    }
-  }
->>>>>>> 20ababc2e83840c68415b665f446bdce3ac4cf3e
 };
 </script>
 <style lang="scss" scoped>
