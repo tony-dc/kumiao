@@ -17,7 +17,16 @@
       />
     </div>
     <div>
-       <input type="text" class="login_text" v-model='verifyImg' placeHolder="请输入验证码"><img src="/api2/users/verifyImg" alt="" @touchstart='handleToverifyImg'>
+      <input
+        v-model="verifyImg"
+        class="login_text"
+        type="text"
+        placeHolder="请输入验证码"
+      />
+      <div class="verifylign">
+          <img class='img' src="/api2/users/verifyImg" alt="" >
+          <span class="changeImg" @touchstart='handlechangeVerifyImg'>看不清楚换一张</span>
+      </div>
     </div>
     <div class="login_btn">
       <input type="submit" value="登录" @touchstart="handleToLogin" />
@@ -36,7 +45,7 @@ export default {
     return {
       username: "",
       password: "",
-      verifyImg:''
+      verifyImg:""
     };
   },
   methods: {
@@ -69,14 +78,14 @@ export default {
           }
         });
     },
-    //点击切换随机验证码
-    handleToverifyImg(ev){
-       ev.target.src='/api2/users/verifyImg?'+Math.random()
+    handlechangeVerifyImg(){
+       const img=document.querySelector('.img')
+       img.src='/api2/users/verifyImg?'+Math.random()
     }
-  }
+  },
 };
 </script>
- <style lang="scss" scoped>
+<style lang="scss" scoped>
 #content .login_body {
   background-color: #fff;
   div {
@@ -90,10 +99,36 @@ export default {
       text-indent: 10px;
       margin-bottom: 5px;
     }
+    .verifylign{
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      .img{
+           flex:1
+          }
+      .changeImg{
+           flex: 1;
+           display: block;
+           height:30px;
+           width: 140px;
+           line-height: 30px;
+           font-size:18px;
+           color:#e54847;
+           text-align: center;
+           padding: 10px;
+           border:1px solid #eee;
+           border-radius:10px;
+           background-color: #eee;
+      }
+    }
+     
+     
   }
+
   .login_btn {
     height: 50px;
     margin: 10px;
+    clear: both;
     input {
       width: 100%;
       height: 100%;
