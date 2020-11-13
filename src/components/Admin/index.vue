@@ -36,22 +36,22 @@ import axios from 'axios'
 export default {
   name: "admin",
   //前置路由守卫
-  // beforeRouteEnter: (to, from, next) => {
-  //    axios.get('/api2/admin').then(res=>{
-  //        const result=res.data.status
-  //        console.log(res)
-  //        if(result===0){
-  //          next(vm=>{
-  //             vm.$store.commit("user/USER_INFO", {
-  //                     nm: res.data.data.username,
-  //                     isAdmin:res.data.data.isAdmin
-  //                   })
-  //          })
-  //        }else{
-  //          next('/mine/login')  
-  //        }
-  //      })
-  // },
+  beforeRouteEnter: (to, from, next) => {
+     axios.get('/api2/admin').then(res=>{
+         const result=res.data.status
+         console.log(res)
+         if(result===0){
+           next(vm=>{
+              vm.$store.commit("user/USER_INFO", {
+                      nm: res.data.data.username,
+                      isAdmin:res.data.data.isAdmin
+                    })
+           })
+         }else{
+           next('/mine/login')  
+         }
+       })
+  },
     methods: {
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
