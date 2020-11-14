@@ -3,43 +3,54 @@
     <Header title="个人中心" />
     <div class="selfInfo">
       <div class="selfImg">
-        <img :src="$store.state.user.userHeader" alt="用户头像" class="img-default" />
-         <input type="file" name="file" value="" @change="handleToupload" />
+        <img
+          :src="$store.state.user.userHeader"
+          alt="用户头像"
+          class="img-default"
+        />
+        <input type="file" name="file" value="" @change="handleToupload" />
         <p>
-         <span>欢迎:</span>
-         <span v-if="$store.state.user.isAdmin">
-          <a href="/admin" target="_blank" class="admin">管理员</a>
-        </span>
-        <span v-else>普通会员</span>：
-          <span class="userInfo">{{$store.state.user.nm}}</span>
+          <span>欢迎:</span>
+          <span v-if="$store.state.user.isAdmin">
+            <a href="/admin" target="_blank" class="admin">管理员</a>
+          </span>
+          <span v-else>普通会员</span>：
+          <span class="userInfo">{{ $store.state.user.nm }}</span>
         </p>
         <button @touchstart="handleToBack" class="back">退出</button>
       </div>
       <div class="center">
         <h2>我的订单</h2>
-        <div>
-          <div>
-            <i class="iconfont "></i>
-           <span>电影</span>
-            </div>
+        <div class="daohang">
           <div>
             <div>
-                <i class="iconfont "></i>
+              <i class="iconfont icon-dianying"></i>
             </div>
-             <span>商城</span> 
+            <span>电影</span>
+          </div>
+          <div>
+            <div class="shop">
+              <i class="iconfont icon-IOTtubiao_huabanfuben"></i>
             </div>
+            <span>商城</span>
+          </div>
         </div>
       </div>
-        <div class="list">
-          <ul>
-            <li>在线观影</li>
-            <li>优惠券</li>
-            <li>折后卡</li>
-          </ul>
-        </div>
-     
-      <p>
-      </p>
+      <div class="list">
+        <ul>
+          <li>在线观影
+          <i class="iconfont icon-iconfontjiantou3"></i>
+          </li>
+          <li>优惠券
+          <i class="iconfont icon-iconfontjiantou3"></i>
+          </li>
+          <li>折后卡
+          <i class="iconfont icon-iconfontjiantou3"></i>
+          </li>
+        </ul>
+      </div>
+
+      <p></p>
     </div>
     <!-- <TabBar />   -->
   </div>
@@ -53,19 +64,19 @@ export default {
   name: "center",
   components: {
     Header,
-    TabBar
+    TabBar,
   },
   //路由前置守卫
   beforeRouteEnter(to, from, next) {
-    axios.get("/api2/users/getUser").then(res => {
+    axios.get("/api2/users/getUser").then((res) => {
       const result = res.data.status;
       console.log(res);
       if (result === 0) {
-        next(vm => {
+        next((vm) => {
           vm.$store.commit("user/USER_INFO", {
             nm: res.data.data.username,
             isAdmin: res.data.data.isAdmin,
-            userHeader: res.data.data.userHeader
+            userHeader: res.data.data.userHeader,
           });
         });
         window.localStorage.setItem("username", res.data.data.username);
@@ -76,13 +87,13 @@ export default {
   },
   methods: {
     handleToBack() {
-      this.$axios.get("/api2/users/logout").then(res => {
+      this.$axios.get("/api2/users/logout").then((res) => {
         const result = res.data.status;
         if (result === 0) {
           this.$store.commit("user/USER_INFO", {
             nm: "",
             isAdmin: false,
-            userHeader: ""
+            userHeader: "",
           });
           this.$router.push("/mine/login");
         }
@@ -97,12 +108,12 @@ export default {
       //配置请求头信息
       let config = {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       };
       this.$axios
         .post("/api2/users/updateuserHeader", param, config)
-        .then(res => {
+        .then((res) => {
           const status = res.data.status;
           console.log(res);
           if (status === 0) {
@@ -115,20 +126,20 @@ export default {
                   nm: This.$store.state.user.nm,
                   isAdmin: This.$store.state.user.isAdmin,
                   //为了清除缓存
-                  userHeader: res.data.data.userHeader + "?" + Math.random()
+                  userHeader: res.data.data.userHeader + "?" + Math.random(),
                 });
-              }
+              },
             });
           } else {
             messageBox({
               title: "更改头像",
               content: "更改失败",
-              ok: "确定"
+              ok: "确定",
             });
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -139,7 +150,6 @@ export default {
   right: 0;
   z-index: 100;
   .selfInfo {
-    //  position: relative;
     width: 100%;
     border-top: 1px solid rgba(255, 255, 255, 0.5);
     .selfImg {
@@ -148,7 +158,8 @@ export default {
       position: relative;
       background-color: #e44040;
       text-align: center;
-      .img-default,input{
+      .img-default,
+      input {
         position: absolute;
         left: 0;
         top: 0;
@@ -159,7 +170,7 @@ export default {
         height: 60px;
         border-radius: 50%;
       }
-      input{
+      input {
         z-index: 50;
         opacity: 0;
       }
@@ -174,14 +185,14 @@ export default {
         line-height: 16px;
         text-align: center;
         padding: 5px;
-        span{
-          padding:5px;
+        span {
+          padding: 5px;
           letter-spacing: 2px;
-          a{
+          a {
             text-decoration: none;
-            color:skyblue;
-            padding:3px;
-            cursor:pointer;
+            color: skyblue;
+            padding: 3px;
+            cursor: pointer;
           }
         }
         .userInfo {
@@ -201,15 +212,67 @@ export default {
         color: slateblue;
       }
     }
-  }
-  .center{
-    // width:300px;
-    h2{
-      width:100%;
-      height:60px;
-      line-height: 60px;
-      text-align: center;
-      font-size:18px;
+    .center {
+      h2 {
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+        font-size: 18px;
+      }
+      .daohang {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        div {
+          flex: 1;
+          div {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            background-color: #e44040;
+            i {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+              font-size: 22px;
+              border-radius: 50%;
+              color:#fff;
+            }
+          }
+          .shop {
+            background-color: rgb(61, 212, 187);
+          }
+        }
+      }
+    }
+    .list{
+       width:100%;
+       margin-top:30px;
+       ul{
+         list-style: none;
+         li{
+           width:100%;
+           height: 60px;
+           line-height: 60px;
+           font-size:18px;
+           padding-left:8px;
+           box-sizing: border-box;
+           color:rgb(133,142,141);
+           border:none;
+           position: relative;
+           border-bottom:1px solid rgba(55, 55, 55, 0.1);
+           i{
+             position: absolute;
+             top:0;
+             right:5px;
+           }
+
+         }
+       }
     }
   }
 }

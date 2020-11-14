@@ -1,7 +1,7 @@
 <template>
   <div id="detail" class="slider-enter-active">
     <Header title="影片详情">
-      <i class="iconfont icon-right" @touchstart="handleToBack"></i>
+      <i class="iconfont icon-zuojiantou" @touchstart="handleToBack"></i>
     </Header>
     <Loading v-if="isloading" />
     <div class="content" v-else>
